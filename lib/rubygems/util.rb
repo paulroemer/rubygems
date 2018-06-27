@@ -116,4 +116,18 @@ module Gem::Util
     end
   end
 
+  ##
+  # Globs for files matching +pattern+ inside of +directory+,
+  # returning absolute paths to the matching files.
+
+  if RUBY_VERSION >= "2.5"
+    def self.glob_files_in_dir(glob, base_path)
+      Dir.glob(glob, base: base_path).map! {|f| File.join(base_path, f) }
+    end
+  else
+    def self.glob_files_in_dir(glob, base_path)
+      Dir.glob(File.expand_path(glob, base_path))
+    end
+  end
+
 end
